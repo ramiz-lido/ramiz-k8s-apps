@@ -1,0 +1,47 @@
+{{- range .Values.applications }}
+{{- $_ := deepCopy $.Values.global | merge . -}}
+{{ $name := .name }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  labels:
+    app.kubernetes.io/name: {{ .name }}
+    app.kubernetes.io/env: {{ .env }}
+    app.kubernetes.io/team: {{ .project }}
+  name: {{ .name }}
+  namespace: argocd
+spec:
+  project: {{ .project }}
+  source:
+    repoURL: {{ .source.repoURL }}
+    path: {{ coalesce .source.path .name }}
+    targetRevision: {{ .source.targetRevision }}
+    helm:
+      releaseName: {{ coalesce .source.releaseName .name }}
+      valueFiles:
+        {{- range .source.values }}
+        - {{ . }}
+        {{- end }}
+  destination:
+    namespace: {{ coalesce .namespace .name }}
+    server: {{ .destination.server }}
+  syncPolicy:
+    managedNamespaceMetadata:
+      labels:
+        app.kubernetes.io/env: {{ .env }}
+        app.kubernetes.io/team: {{ .project }}
+    syncOptions:
+      {{- range .syncPolicy.syncOptions }}
+      - {{ . }}
+      {{- end }}
+    {{- if hasKey .syncPolicy "automated" }}
+    automated:
+      prune: {{ .syncPolicy.automated.prune }}
+      selfHeal: {{ .syncPolicy.automated.selfHeal }}
+    {{- end }}
+  revisionHistoryLimit: {{ .revisionHistoryLimit }}
+---
+{{- end }}

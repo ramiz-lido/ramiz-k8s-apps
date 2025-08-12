@@ -1,0 +1,23 @@
+global:
+  name: "" # should be defined per application inside values per environment
+  # namespace: "" where a helm chart should be installed
+  project: beta
+  env: "" # should be defined per application inside values per environment
+  source:
+    #   chart: "name-of-helm-chart" # takes from name by default
+    repoURL: https://github.com/ramiz-lido/ramiz-k8s-apps
+    #   path: "path-to-helm-chart" # path to a helm chart
+    targetRevision: HEAD
+  #    values:
+  #      - values.yaml
+  #      - values-k8s-sandbox.yaml
+  destination:
+    # namespace: "namespace-name" # takes from name by default
+    server: https://kubernetes.default.svc
+  syncPolicy:
+    automated:
+      prune: false
+      selfHeal: false
+    syncOptions:
+      - CreateNamespace=true
+  revisionHistoryLimit: 5

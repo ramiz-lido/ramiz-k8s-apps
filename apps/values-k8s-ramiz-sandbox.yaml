@@ -1,0 +1,98 @@
+global:
+  env: sandbox
+  source:
+    values:
+      - values.yaml
+      - values-k8s-ramiz-sandbox.yaml
+
+applications:
+  - name: ramiz-k8s-nginx
+    source:
+      repoURL: https://github.com/lidofinance/k8s-helm-charts-template
+      path: helm-chart
+    replicas: 1
+    maxSurge: 2
+    maxUnavailable: 2
+
+    deployment:
+      enabled: true
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/path: "/_metrics"
+
+    PodDisruptionBudget:
+      enabled: true
+      maxUnavailable: 1
+
+    HorizontalPodAutoscaler:
+      enabled: true
+      minReplicas: 1
+      maxReplicas: 3
+      averageUtilization: 70
+
+    image:
+      registry: docker.io
+      name: nginx
+      tag: 1.29-alpine
+      pullPolicy: IfNotPresent
+
+    terminationGracePeriodSeconds: 30
+
+    securityContext:
+      readOnlyRootFilesystem: false
+
+    serviceAccount:
+      name: default
+
+    resources:
+      limits:
+        cpu: 100m
+        memory: 56Mi
+      requests:
+        cpu: 100m
+        memory: 56Mi
+    startupProbe:
+      httpGet:
+        path: /
+        port: 80
+      failureThreshold: 2
+      periodSeconds: 5
+    readinessProbe:
+      httpGet:
+        path: /
+        port: 80
+      failureThreshold: 2
+      periodSeconds: 5
+    livenessProbe:
+      httpGet:
+        path: /
+        port: 80
+      failureThreshold: 2
+      periodSeconds: 5
+
+    service:
+      enabled: true
+      type:
+        ClusterIP
+      annotations:
+        lido.fi/maintainer: Full name test
+        prometheus.io/probe: "true"
+        prometheus.io/path: /_livenessProbe
+      ports:
+        - name: http
+          port: 8080
+          targetPort: 80
+
+    ingress:
+      enabled: true
+      ingressClassName: nginx-internal
+      rules:
+        - host: nginx.ramiz.k8s-sandbox.org
+          paths:
+            - path: /
+              pathType: Prefix
+      # TLS configuration uncomment if it necessary
+      # tls:
+      #   - hosts:
+      #       - OVERRIDE-ME  # Replace with your actual host
+      #     secretName: OVERRIDE-ME  # Optional: specify if you have TLS certificate
