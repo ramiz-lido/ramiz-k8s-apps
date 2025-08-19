@@ -19,6 +19,9 @@ spec:
     repoURL: {{ .source.repoURL }}
     path: {{ coalesce .source.path .name }}
     targetRevision: {{ .source.targetRevision }}
+    {{- if .source.ref -}}
+    ref: {{ .source.ref }}
+    {{- end -}}
     helm:
       releaseName: {{ coalesce .source.releaseName .name }}
       valueFiles:
