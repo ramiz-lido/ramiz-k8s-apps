@@ -1,17 +1,13 @@
 global:
   env: sandbox
-  source:
-    values:
-      - values.yaml
 
 applications:
   - name: beta-ramiz-nginx
     source:
       repoURL: https://github.com/lidofinance/k8s-helm-charts-template.git
       path: helm-chart
-      helm:
-        valueFiles:
-          - $values/apps/values-nginx.yaml
+      values:
+        - $values/apps/values-nginx.yaml
 
   - name: beta-ramiz-values
     source:
