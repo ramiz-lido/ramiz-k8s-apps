@@ -17,7 +17,9 @@ spec:
   project: {{ .project }}
   source:
     repoURL: {{ .source.repoURL }}
-    path: {{ coalesce .source.path .name }}
+    {{- if .source.path }}
+    path: {{ .source.path }}
+    {{- end }}
     targetRevision: {{ .source.targetRevision }}
     {{- if .source.ref }}
     ref: {{ .source.ref }}
