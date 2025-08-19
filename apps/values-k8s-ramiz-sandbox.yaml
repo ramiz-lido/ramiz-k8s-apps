@@ -12,4 +12,5 @@ applications:
   - name: beta-ramiz-values
     source:
       repoURL: https://github.com/ramiz-lido/ramiz-k8s-apps.git
+      path: apps
       ref: values
