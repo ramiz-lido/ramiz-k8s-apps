@@ -8,8 +8,3 @@ applications:
       path: helm-chart
       values:
         - $values/apps/values-nginx.yaml
-
-  - name: beta-ramiz-values
-    source:
-      repoURL: https://github.com/ramiz-lido/ramiz-k8s-apps.git
-      ref: values

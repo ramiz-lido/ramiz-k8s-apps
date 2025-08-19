@@ -15,21 +15,24 @@ metadata:
   namespace: argocd
 spec:
   project: {{ .project }}
-  source:
-    repoURL: {{ .source.repoURL }}
-    {{- if .source.path }}
-    path: {{ .source.path }}
-    {{- end }}
-    targetRevision: {{ .source.targetRevision }}
-    {{- if .source.ref }}
-    ref: {{ .source.ref }}
-    {{- end }}
-    helm:
-      releaseName: {{ coalesce .source.releaseName .name }}
-      valueFiles:
-        {{- range .source.values }}
-        - {{ . }}
-        {{- end }}
+  sources:
+    - repoURL: {{ .source.repoURL }}
+      {{- if .source.path }}
+      path: {{ .source.path }}
+      {{- end }}
+      targetRevision: {{ .source.targetRevision }}
+      {{- if .source.ref }}
+      ref: {{ .source.ref }}
+      {{- end }}
+      helm:
+        releaseName: {{ coalesce .source.releaseName .name }}
+        valueFiles:
+          {{- range .source.values }}
+          - {{ . }}
+          {{- end }}
+
+    - repoURL: https://github.com/ramiz-lido/ramiz-k8s-apps.git
+      ref: values
   destination:
     namespace: beta-ramiz-apps
     server: {{ .destination.server }}
