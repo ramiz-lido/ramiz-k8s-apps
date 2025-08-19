@@ -26,7 +26,7 @@ spec:
         - {{ . }}
         {{- end }}
   destination:
-    namespace: {{ coalesce .namespace .name }}
+    namespace: beta-ramiz-apps
     server: {{ .destination.server }}
   syncPolicy:
     managedNamespaceMetadata:
