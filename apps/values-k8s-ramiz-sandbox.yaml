@@ -13,5 +13,7 @@ applications:
         valueFiles:
           - $values/apps/values-nginx.yaml
 
-  - repoURL: https://github.com/lidofinance/k8s-helm-charts-template.git
-    ref: values
+  - name: beta-ramiz-values
+    source:
+      repoURL: https://github.com/lidofinance/k8s-helm-charts-template.git
+      ref: values
