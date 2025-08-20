@@ -27,11 +27,11 @@ spec:
       helm:
         releaseName: {{ coalesce .source.releaseName .name }}
         ignoreMissingValueFiles: false
-        values: |
+        values: |-
+          name: nginx
           replicas: 1
-          maxSurge: 2
-          maxUnavailable: 2
-
+          maxSurge: 1
+          maxUnavailable: 1
           deployment:
             enabled: true
             annotations:
@@ -87,6 +87,8 @@ spec:
               port: 80
             failureThreshold: 2
             periodSeconds: 5
+          maxSurge: 2
+          maxUnavailable: 2
 
           service:
             enabled: true
