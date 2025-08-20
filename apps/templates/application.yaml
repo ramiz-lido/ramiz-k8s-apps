@@ -36,7 +36,7 @@ spec:
       targetRevision: main
       ref: values
   destination:
-    namespace: beta-ramiz-apps
+    namespace: team-beta
     server: {{ .destination.server }}
   syncPolicy:
     managedNamespaceMetadata:

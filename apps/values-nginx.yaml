@@ -77,7 +77,7 @@
           enabled: true
           ingressClassName: nginx-internal
           rules:
-            - host: nginx.ramiz.k8s-sandbox.org
+            - host: nginx-test.k8s-sandbox.org
               paths:
                 - path: /
                   pathType: Prefix
