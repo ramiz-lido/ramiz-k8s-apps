@@ -50,8 +50,8 @@ spec:
 
           image:
             registry: docker.io
-            name: nginx
-            tag: 1.29-alpine
+            name: nginxinc/nginx-unprivileged
+            tag: stable-alpine
             pullPolicy: IfNotPresent
 
           terminationGracePeriodSeconds: 30
@@ -72,19 +72,19 @@ spec:
           startupProbe:
             httpGet:
               path: /
-              port: 80
+              port: 8080
             failureThreshold: 2
             periodSeconds: 5
           readinessProbe:
             httpGet:
               path: /
-              port: 80
+              port: 8080
             failureThreshold: 2
             periodSeconds: 5
           livenessProbe:
             httpGet:
               path: /
-              port: 80
+              port: 8080
             failureThreshold: 2
             periodSeconds: 5
           maxSurge: 2
