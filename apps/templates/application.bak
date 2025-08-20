@@ -1,0 +1,57 @@
+{{- range .Values.applications }}
+{{- $_ := deepCopy $.Values.global | merge . -}}
+{{ $name := .name }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  labels:
+    app.kubernetes.io/name: {{ .name }}
+    app.kubernetes.io/env: {{ .env }}
+    app.kubernetes.io/team: {{ .project }}
+  name: {{ .name }}
+  namespace: argocd
+spec:
+  project: {{ .project }}
+  sources:
+    - repoURL: {{ .source.repoURL }}
+      {{- if .source.path }}
+      path: {{ .source.path }}
+      {{- end }}
+      targetRevision: {{ .source.targetRevision }}
+      {{- if .source.ref }}
+      ref: {{ .source.ref }}
+      {{- end }}
+      helm:
+        releaseName: {{ coalesce .source.releaseName .name }}
+        ignoreMissingValueFiles: false
+        valueFiles:
+          {{- range .source.values }}
+          - {{ . }}
+          {{- end }}
+
+    - repoURL: https://github.com/ramiz-lido/ramiz-k8s-apps.git
+      targetRevision: main
+      ref: values
+  destination:
+    namespace: beta-ramiz-apps
+    server: {{ .destination.server }}
+  syncPolicy:
+    managedNamespaceMetadata:
+      labels:
+        app.kubernetes.io/env: {{ .env }}
+        app.kubernetes.io/team: {{ .project }}
+    syncOptions:
+      {{- range .syncPolicy.syncOptions }}
+      - {{ . }}
+      {{- end }}
+    {{- if hasKey .syncPolicy "automated" }}
+    automated:
+      prune: {{ .syncPolicy.automated.prune }}
+      selfHeal: {{ .syncPolicy.automated.selfHeal }}
+    {{- end }}
+  revisionHistoryLimit: {{ .revisionHistoryLimit }}
+---
+{{- end }}
