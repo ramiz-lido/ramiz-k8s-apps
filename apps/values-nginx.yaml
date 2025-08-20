@@ -81,3 +81,6 @@
               paths:
                 - path: /
                   pathType: Prefix
+          tls:
+            - hosts:
+                - nginx-test.k8s-sandbox.org
