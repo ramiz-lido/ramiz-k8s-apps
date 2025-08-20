@@ -1,0 +1,137 @@
+{{- range .Values.applications }}
+{{- $_ := deepCopy $.Values.global | merge . -}}
+{{ $name := .name }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+  labels:
+    app.kubernetes.io/name: {{ .name }}
+    app.kubernetes.io/env: {{ .env }}
+    app.kubernetes.io/team: {{ .project }}
+  name: {{ .name }}
+  namespace: argocd
+spec:
+  project: {{ .project }}
+  sources:
+    - repoURL: {{ .source.repoURL }}
+      {{- if .source.path }}
+      path: {{ .source.path }}
+      {{- end }}
+      targetRevision: {{ .source.targetRevision }}
+      {{- if .source.ref }}
+      ref: {{ .source.ref }}
+      {{- end }}
+      helm:
+        releaseName: {{ coalesce .source.releaseName .name }}
+        ignoreMissingValueFiles: false
+        values: |-
+          name: nginx
+          replicas: 1
+          maxSurge: 1
+          maxUnavailable: 1
+          deployment:
+            enabled: true
+            annotations:
+              prometheus.io/scrape: "true"
+              prometheus.io/path: "/_metrics"
+
+          PodDisruptionBudget:
+            enabled: true
+            maxUnavailable: 1
+
+          HorizontalPodAutoscaler:
+            enabled: true
+            minReplicas: 1
+            maxReplicas: 3
+            averageUtilization: 70
+
+          image:
+            registry: docker.io
+            name: nginxinc/nginx-unprivileged
+            tag: stable-alpine
+            pullPolicy: IfNotPresent
+
+          terminationGracePeriodSeconds: 30
+
+          securityContext:
+            readOnlyRootFilesystem: false
+
+          serviceAccount:
+            name: default
+
+          resources:
+            limits:
+              cpu: 100m
+              memory: 56Mi
+            requests:
+              cpu: 100m
+              memory: 56Mi
+          startupProbe:
+            httpGet:
+              path: /
+              port: 8080
+            failureThreshold: 2
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            failureThreshold: 2
+            periodSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            failureThreshold: 2
+            periodSeconds: 5
+          maxSurge: 2
+          maxUnavailable: 2
+
+          service:
+            enabled: true
+            type:
+              ClusterIP
+            annotations:
+              lido.fi/maintainer: Full name test
+              prometheus.io/probe: "true"
+              prometheus.io/path: /_livenessProbe
+            ports:
+              - name: http
+                port: 8080
+                targetPort: 8080
+
+          ingress:
+            enabled: true
+            ingressClassName: nginx-internal
+            rules:
+              - host: nginx.ramiz.k8s-sandbox.org
+                paths:
+                  - path: /
+                    pathType: Prefix
+
+    - repoURL: https://github.com/ramiz-lido/ramiz-k8s-apps.git
+      targetRevision: main
+      ref: values
+  destination:
+    namespace: beta-ramiz-apps
+    server: {{ .destination.server }}
+  syncPolicy:
+    managedNamespaceMetadata:
+      labels:
+        app.kubernetes.io/env: {{ .env }}
+        app.kubernetes.io/team: {{ .project }}
+    syncOptions:
+      {{- range .syncPolicy.syncOptions }}
+      - {{ . }}
+      {{- end }}
+    {{- if hasKey .syncPolicy "automated" }}
+    automated:
+      prune: {{ .syncPolicy.automated.prune }}
+      selfHeal: {{ .syncPolicy.automated.selfHeal }}
+    {{- end }}
+  revisionHistoryLimit: {{ .revisionHistoryLimit }}
+---
+{{- end }}
