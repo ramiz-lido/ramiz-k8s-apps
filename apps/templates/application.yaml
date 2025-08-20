@@ -33,7 +33,7 @@ spec:
           {{- end }}
 
     - repoURL: https://github.com/ramiz-lido/ramiz-k8s-apps.git
-      targetRevision: main
+      targetRevision: sandbox
       ref: values
   destination:
     namespace: team-beta
