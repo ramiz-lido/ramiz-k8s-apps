@@ -9,3 +9,12 @@ applications:
       targetRevision: 1.0.1
       values:
         - $values/apps/values-nginx.yaml
+
+  - name: beta-ramiz-k8s-hello
+    source:
+      repoURL: https://github.com/lidofinance/k8s-hello.git
+      path: helm-chart
+      targetRevision: main
+      values: |-
+        image:
+          name: k8s-hello/k8s-hello
