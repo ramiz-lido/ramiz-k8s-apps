@@ -6,5 +6,6 @@ applications:
     source:
       repoURL: https://github.com/lidofinance/k8s-helm-charts-template.git
       path: helm-chart
+      targetRevision: main
       values:
         - $values/apps/values-nginx.yaml

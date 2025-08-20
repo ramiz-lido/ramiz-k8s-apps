@@ -26,12 +26,14 @@ spec:
       {{- end }}
       helm:
         releaseName: {{ coalesce .source.releaseName .name }}
+        ignoreMissingValueFiles: false
         valueFiles:
           {{- range .source.values }}
           - {{ . }}
           {{- end }}
 
     - repoURL: https://github.com/ramiz-lido/ramiz-k8s-apps.git
+      targetRevision: main
       ref: values
   destination:
     namespace: beta-ramiz-apps
