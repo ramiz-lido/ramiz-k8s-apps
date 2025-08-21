@@ -1,4 +1,4 @@
-        name: nginx
+        name: beta-ramiz-nginx-test
         replicas: 1
         maxSurge: 1
         maxUnavailable: 1
