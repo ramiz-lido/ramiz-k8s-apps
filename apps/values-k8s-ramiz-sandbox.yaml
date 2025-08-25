@@ -10,11 +10,10 @@ applications:
       values:
         - $values/apps/values-nginx.yaml
 
-  # - name: beta-ramiz-k8s-hello
-  #   source:
-  #     repoURL: https://github.com/lidofinance/k8s-hello.git
-  #     path: helm-chart
-  #     targetRevision: main
-  #     values: |-
-  #       image:
-  #         name: k8s-hello/k8s-hello
+  - name: beta-ramiz-k8s-hello
+    source:
+      repoURL: https://github.com/lidofinance/k8s-helm-charts-template.git
+      path: helm-chart
+      targetRevision: adding_pvc_template
+      values:
+        - $values/apps/values-hello.yaml
