@@ -20,7 +20,7 @@
 
         image:
           registry: harbor.k8s-sandbox.org
-          name: update-test/nginx
+          name: updater-test/nginx
           tag: dev
           pullPolicy: IfNotPresent
 
