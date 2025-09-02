@@ -19,9 +19,9 @@
           averageUtilization: 70
 
         image:
-          registry: docker.io
-          name: nginxinc/nginx-unprivileged
-          tag: stable-alpine
+          registry: harbor.k8s-sandbox.org
+          name: update-test/nginx
+          tag: dev
           pullPolicy: IfNotPresent
 
         terminationGracePeriodSeconds: 30
