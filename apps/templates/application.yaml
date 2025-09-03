@@ -7,7 +7,7 @@ kind: Application
 metadata:
   annotations:
     argocd-image-updater.argoproj.io/write-back-method: argocd
-    argocd-image-updater.argoproj.io/image-list: nginx=harbor.k8s-sandbox.org/updater-test/nginx
+    argocd-image-updater.argoproj.io/image-list: nginx=harbor.k8s-sandbox.org/updater-test/nginx:dev
     argocd-image-updater.argoproj.io/update-strategy: digest
   finalizers:
     - resources-finalizer.argocd.argoproj.io
