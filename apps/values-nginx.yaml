@@ -19,8 +19,7 @@
           averageUtilization: 70
 
         image:
-          registry: harbor.k8s-sandbox.org
-          name: updater-test/nginx
+          name: harbor.k8s-sandbox.org/updater-test/nginx
           tag: dev
           pullPolicy: IfNotPresent
 
