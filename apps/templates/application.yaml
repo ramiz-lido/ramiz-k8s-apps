@@ -7,7 +7,7 @@ kind: Application
 metadata:
   annotations:
     argocd-image-updater.argoproj.io/write-back-method: git:secret:argocd/git-creds
-    argocd-image-updater.argoproj.io/git-repository: git@github.com:ramiz-lido/ramiz-k8s-apps.git
+    argocd-image-updater.argoproj.io/git-repository: https://github.com/ramiz-lido/ramiz-k8s-apps.git
     argocd-image-updater.argoproj.io/git-branch: git_write_back
     argocd-image-updater.argoproj.io/image-list: nginx=harbor.k8s-sandbox.org/updater-test/nginx:dev
     argocd-image-updater.argoproj.io/update-strategy: digest
