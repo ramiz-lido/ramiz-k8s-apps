@@ -1,4 +1,4 @@
-        name: nginx
+        name: nginx-as
         replicas: 1
         maxSurge: 1
         maxUnavailable: 1
