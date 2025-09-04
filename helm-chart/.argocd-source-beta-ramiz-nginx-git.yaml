@@ -4,5 +4,5 @@ helm:
     value: harbor.k8s-sandbox.org/updater-test/nginx
     forcestring: true
   - name: image.tag
-    value: dev@sha256:8f437832c9ce4e54989698544e138e454bcfcd4571f4fc06e31f8e3c31e24a7e
+    value: dev@sha256:f1285cd4a5d633576bbfdde5a1f5ca6644e45ffa93a21100b2921d2ca59e7789
     forcestring: true
