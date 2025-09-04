@@ -119,6 +119,9 @@ spec:
     namespace: beta-ramiz-apps
     server: {{ .destination.server }}
   syncPolicy:
+    ignoreApplicationDifferences:
+      - jsonPointers:
+          - /spec/source/helm/valuesObject/image/tag
     managedNamespaceMetadata:
       labels:
         app.kubernetes.io/env: {{ .env }}
