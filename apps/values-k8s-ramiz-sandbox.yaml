@@ -2,7 +2,7 @@ global:
   env: sandbox
 
 applications:
-  - name: beta-ramiz-nginx
+  - name: beta-ramiz-nginx-git
     source:
       repoURL: https://github.com/lidofinance/k8s-helm-charts-template.git
       path: helm-chart
