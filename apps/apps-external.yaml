@@ -1,0 +1,10 @@
+- name: beta-ramiz-nginx-as
+  type: helm
+  chartPath: helm-chart
+  repoURL: https://github.com/lidofinance/k8s-helm-charts-template.git
+  revision: image_updater
+  externalValues:
+    - repoURL: https://github.com/ramiz-lido/ramiz-k8s-apps.git
+      revision: "applicationset"
+      valueFilePath: "$values/beta-ramiz-nginx-as/values-k8s-{ENV}.yaml"
+      ref: "values"
