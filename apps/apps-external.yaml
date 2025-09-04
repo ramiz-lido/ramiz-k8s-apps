@@ -5,6 +5,6 @@
   revision: image_updater
   externalValues:
     - repoURL: https://github.com/ramiz-lido/ramiz-k8s-apps.git
-      revision: "applicationset"
+      revision: "applicationsets"
       valueFilePath: "$values/beta-ramiz-nginx-as/values-k8s-{ENV}.yaml"
       ref: "values"
