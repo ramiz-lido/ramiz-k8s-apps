@@ -37,7 +37,7 @@ spec:
           {{- end }}
 
     - repoURL: https://github.com/ramiz-lido/ramiz-k8s-apps.git
-      targetRevision: main
+      targetRevision: git_write_back
       ref: values
   destination:
     namespace: beta-ramiz-apps
