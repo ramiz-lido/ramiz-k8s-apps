@@ -19,7 +19,7 @@
           averageUtilization: 70
 
         image:
-          name: harbor.k8s-sandbox.org/updater-test/nginx
+          name: harbor.k8s-sandbox.org/updater-test/nginxx
           tag: dev
           digest: ""
           pullPolicy: IfNotPresent
