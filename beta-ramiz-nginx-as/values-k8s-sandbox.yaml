@@ -21,6 +21,7 @@
         image:
           name: harbor.k8s-sandbox.org/updater-test/nginx
           tag: dev
+          digest: ""
           pullPolicy: IfNotPresent
 
         terminationGracePeriodSeconds: 30
